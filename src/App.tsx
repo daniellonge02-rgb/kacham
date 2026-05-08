@@ -101,6 +101,21 @@ const RestrictionToggle = ({ icon: Icon, label, enabled, onToggle }: { icon: any
   </div>
 );
 
+// --- Mock Data ---
+const USAGE_DATA = [
+  { name: 'Whatsapp', value: 35, color: '#25D366', usage: '70mb' },
+  { name: 'Youtube', value: 25, color: '#FF0000', usage: '50mb' },
+  { name: 'Facebook', value: 20, color: '#1877F2', usage: '40mb' },
+  { name: 'X', value: 20, color: '#000000', usage: '40mb' },
+];
+
+const TRANSACTIONS = [
+  { id: 1, title: 'Data Purchase', amount: '-₦500', date: 'Today, 2:30 PM', icon: Globe, type: 'out' },
+  { id: 2, title: 'Wallet Top-up', amount: '+₦5,000', date: 'Yesterday', icon: Plus, type: 'in' },
+  { id: 3, title: 'Airtime', amount: '-₦200', date: 'May 4, 10:15 AM', icon: Smartphone, type: 'out' },
+];
+
+// --- Main App Component ---
 export default function App() {
   const [balanceVisible, setBalanceVisible] = useState(false);
   const [restrictions, setRestrictions] = useState({
@@ -116,18 +131,18 @@ export default function App() {
 
   return (
     <div className="max-w-md mx-auto min-h-dvh bg-[#F8F9FB] flex flex-col relative pb-28 overflow-x-hidden no-scrollbar font-sans">
-      {/* Precision Header */}
+      {/* High-Fidelity Header */}
       <header className="px-6 pt-10 pb-6 flex items-center justify-between sticky top-0 bg-[#F8F9FB]/80 backdrop-blur-xl z-50">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-gray-200/50 overflow-hidden ring-4 ring-white shadow-sm">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jemi" alt="User" />
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jemi" alt="User Profile" />
           </div>
           <div className="space-y-0.5">
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Hello Jemi</p>
             <h1 className="font-bold text-base text-brand-dark tracking-tight">What would you like to do?</h1>
           </div>
         </div>
-        <button className="relative w-10 h-10 flex items-center justify-center text-gray-400">
+        <button className="relative w-10 h-10 flex items-center justify-center text-gray-400 hover:text-brand-orange transition-colors">
           <Bell size={24} />
           <span className="absolute top-2 right-2 w-2 h-2 bg-brand-orange rounded-full border-2 border-[#F8F9FB]" />
         </button>
@@ -136,27 +151,29 @@ export default function App() {
       <main className="flex-1 px-6 space-y-10">
         {/* Screenshot Accurate Balance Card */}
         <section className="relative">
-          <div className="bg-brand-dark rounded-[2rem] pt-10 pb-20 px-8 text-center text-white shadow-2xl relative overflow-hidden">
+          <div className="bg-brand-dark rounded-[2.5rem] pt-12 pb-24 px-8 text-center text-white shadow-[0_20px_50px_rgba(1,31,82,0.3)] relative overflow-hidden">
             <div className="absolute top-0 inset-x-0 h-full bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-orange/20 rounded-full blur-[80px]" />
+            
             <p className="text-[11px] font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Available balance</p>
-            <h2 className="text-3xl font-black tracking-tighter mb-8 tabular-nums">
+            <h2 className="text-4xl font-black tracking-tighter mb-8 tabular-nums">
               {balanceVisible ? "₦25,450.00" : "• • • •"}
             </h2>
             <motion.button 
               whileTap={{ scale: 0.95 }}
               onClick={() => setBalanceVisible(!balanceVisible)}
-              className="bg-white text-brand-dark px-10 py-3 rounded-full font-bold text-xs shadow-xl active:bg-gray-100 transition-colors"
+              className="bg-white text-brand-dark px-10 py-3.5 rounded-full font-bold text-xs shadow-xl active:bg-gray-100 transition-all hover:shadow-2xl"
             >
               {balanceVisible ? "Hide balance" : "Fund wallet"}
             </motion.button>
           </div>
 
           {/* Action Cards Overlap */}
-          <div className="flex justify-between gap-3 -mt-10 px-4">
+          <div className="flex justify-between gap-3 -mt-12 px-2">
             <ActionButton icon={Smartphone} label="Airtime" />
             <ActionButton icon={Database} label="Data" />
-            <ActionButton icon={Ticket} label="Recharge Pins" />
-            <ActionButton icon={Globe} label="Data Pins" />
+            <ActionButton icon={Ticket} label="Refills" />
+            <ActionButton icon={Globe} label="Pins" />
           </div>
         </section>
 
@@ -164,10 +181,10 @@ export default function App() {
         <section className="space-y-5">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-lg tracking-tight text-brand-dark">Analysis</h3>
-            <button className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">View analytics</button>
+            <button className="text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-brand-orange transition-colors">View analytics</button>
           </div>
           
-          <div className="flex items-center gap-8 bg-white/40 p-6 rounded-[2rem] border border-white/60">
+          <div className="flex items-center gap-8 bg-white p-7 rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-gray-100/50">
             <div className="w-32 h-32 flex-shrink-0 relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -185,6 +202,10 @@ export default function App() {
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-[8px] uppercase font-bold text-gray-300">Total</span>
+                <span className="text-xs font-bold text-brand-dark">200MB</span>
+              </div>
             </div>
             
             <div className="flex-1 space-y-3">
@@ -194,7 +215,7 @@ export default function App() {
                     <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }} />
                     <span className="text-gray-500 font-bold">{item.name}</span>
                   </div>
-                  <span className="font-bold bg-gray-200/50 px-2 py-0.5 rounded text-[9px] text-gray-500">
+                  <span className="font-bold bg-gray-100 px-2.5 py-1 rounded-lg text-[9px] text-gray-500 tracking-wide">
                     {item.usage}
                   </span>
                 </div>
@@ -223,16 +244,16 @@ export default function App() {
             <h3 className="font-bold text-lg tracking-tight text-brand-dark">Recent transactions</h3>
             <button className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">View all</button>
           </div>
-          <div className="bg-white/40 rounded-[2rem] border border-white/60 overflow-hidden divide-y divide-white/40">
+          <div className="bg-white rounded-[2.5rem] shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-gray-100/50 overflow-hidden divide-y divide-gray-50">
             {TRANSACTIONS.map((tx) => (
-              <div key={tx.id} className="p-5 flex items-center justify-between">
+              <div key={tx.id} className="p-5 flex items-center justify-between hover:bg-gray-50 transition-colors">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-2xl bg-white shadow-sm flex items-center justify-center text-gray-400">
+                  <div className="w-11 h-11 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 shadow-inner">
                     <tx.icon size={20} />
                   </div>
                   <div>
                     <h4 className="font-bold text-sm tracking-tight text-brand-dark">{tx.title}</h4>
-                    <p className="text-[9px] font-bold text-gray-300 uppercase tracking-widest leading-none mt-1">{tx.date}</p>
+                    <p className="text-[10px] font-bold text-gray-300 uppercase tracking-widest leading-none mt-1">{tx.date}</p>
                   </div>
                 </div>
                 <span className={cn(
@@ -245,15 +266,36 @@ export default function App() {
             ))}
           </div>
         </section>
+
+        {/* Branding Footer */}
+        <footer className="pt-10 pb-20 text-center space-y-6">
+          <div className="flex items-center justify-center gap-3">
+            <LogoMark className="w-8 h-8 opacity-20" />
+            <span className="font-bold tracking-tighter text-xl text-brand-dark opacity-20">Kacham</span>
+          </div>
+          <p className="text-[10px] font-medium text-gray-300 px-12">Your warm, friendly companion for community-oriented commerce and connectivity.</p>
+        </footer>
       </main>
 
-      {/* Screenshot Match Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#E5E5E5] px-10 py-6 flex justify-between items-center z-50 rounded-t-[2.5rem]">
-        <div className="w-7 h-7 bg-gray-500 rounded shadow-inner opacity-80" />
-        <div className="w-7 h-7 bg-gray-400 rounded shadow-inner opacity-40" />
-        <div className="w-7 h-7 bg-gray-400 rounded shadow-inner opacity-40" />
-        <div className="w-7 h-7 bg-gray-400 rounded shadow-inner opacity-40" />
+      {/* Screenshot Match Navigation - Refined with Icons */}
+      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white/90 backdrop-blur-xl px-10 py-6 flex justify-between items-center z-50 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.04)] border-t border-gray-100">
+        <NavButton icon={Home} label="Home" active />
+        <NavButton icon={Wallet} label="Wallet" />
+        <NavButton icon={Clock} label="History" />
+        <NavButton icon={User} label="Profile" />
       </nav>
     </div>
+  );
+}
+
+function NavButton({ icon: Icon, label, active = false }: { icon: any, label: string, active?: boolean }) {
+  return (
+    <button className={cn(
+      "flex flex-col items-center gap-1 transition-all",
+      active ? "text-brand-orange scale-110" : "text-gray-300 hover:text-brand-dark"
+    )}>
+      <Icon size={24} strokeWidth={active ? 2.5 : 1.5} />
+      <span className="text-[9px] font-bold uppercase tracking-widest">{label}</span>
+    </button>
   );
 }
